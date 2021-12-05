@@ -28,8 +28,7 @@
     const txId = '61abe41bf76175a7eaf61d8e';
     var addon, addonOptions;
 
-    async function updateTxCategory (id, category) {
-      const changes = { category }
+    async function updateTx (id, changes) {
       console.log(`Updating TX ${id}...`, changes)
       const result = await addon.api.updateTransaction(id, changes)
       return result
@@ -58,7 +57,10 @@
 
         const newCategory = `Category #${Math.floor(Math.random() * 10000)}`
 
-        const result = await updateTxCategory(txId, newCategory)
+        const result = await updateTx(txId, {
+          category: newCategory,
+          type: 'deposit'
+        })
         console.log({ result })
         $('#categorizeTx').removeAttr('disabled');
       });
