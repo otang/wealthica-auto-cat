@@ -59,7 +59,7 @@
 
         const result = await updateTx(txId, {
           category: newCategory,
-          type: 'deposit'
+          type: 'income'
         })
         console.log({ result })
         $('#categorizeTx').removeAttr('disabled');
