@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
 <head>
@@ -20,17 +19,27 @@
     <button type="button" disabled="disabled" id="getPositions">List Positions</button>
     <button type="button" disabled="disabled" id="addTransaction">Add Transaction</button>
     <button type="button" disabled="disabled" id="saveData">Save Data</button>
+    <button type="button" disabled="disabled" id="categorizeTx">Categorize Transaction "ROBSON WINE, BEER & SP VANCOUVER BC"</button>
   </p>
   <textarea id="data" rows="8" cols="100"></textarea>
   <div id="result"></div>
 
   <script type="text/javascript">
+    window.txId = '5fd023265eff6b1110295506';
     var addon, addonOptions;
+
+    async function updateTxCategory (id, category) {
+      const changes = { category }
+      console.log(`Updating TX ${id}...`, changes)
+      const result = await addon.api.updateTransaction(id, changes)
+      return result
+    }
 
     $(function () {
       addon = new Addon();
 
       addon.on('init', function (options) {
+        console.log('options', options)
         // Dashboard is ready and is signaling to the add-on that it should
         // render using the passed in options (filters, language, etc.)
         addonOptions = options;
@@ -41,6 +50,23 @@
         addonOptions = _.extend(addonOptions, options);
         showAddonData(addonOptions.data);
       });
+
+      $('#categorizeTx').on('click', async function () {
+        alert('categorizing transaction...')
+
+        $(this).attr('disabled', 'disabled');
+
+        const id = '5fd023265eff6b1110295506'
+        const newCategory = `Category #${Math.floor(Math.random() * 10000)}`
+
+        const result = await updateTxCategory(id, newCategory)
+        console.log({ result })
+      });
+
+
+
+
+
 
       $('#addTransaction').on('click', function () {
         $(this).attr('disabled', 'disabled');
