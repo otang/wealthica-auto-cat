@@ -19,13 +19,13 @@
     <button type="button" disabled="disabled" id="getPositions">List Positions</button>
     <button type="button" disabled="disabled" id="addTransaction">Add Transaction</button>
     <button type="button" disabled="disabled" id="saveData">Save Data</button>
-    <button type="button" disabled="disabled" id="categorizeTx">Categorize Transaction "ROBSON WINE, BEER & SP VANCOUVER BC"</button>
+    <button type="button" disabled="disabled" id="categorizeTx">Categorize Transaction "INTERAC e-Transfer From: JOSEPH YU"</button>
   </p>
   <textarea id="data" rows="8" cols="100"></textarea>
   <div id="result"></div>
 
   <script type="text/javascript">
-    window.txId = '5fd023265eff6b1110295506';
+    const txId = '61abe41bf76175a7eaf61d8e';
     var addon, addonOptions;
 
     async function updateTxCategory (id, category) {
@@ -56,13 +56,11 @@
 
         $(this).attr('disabled', 'disabled');
 
-        const id = '5fd023265eff6b1110295506'
         const newCategory = `Category #${Math.floor(Math.random() * 10000)}`
 
-        const result = await updateTxCategory(id, newCategory)
+        const result = await updateTxCategory(txId, newCategory)
         console.log({ result })
       });
-
 
 
 
