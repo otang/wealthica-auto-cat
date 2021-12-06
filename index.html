@@ -103,7 +103,10 @@
             return stringContainsInsensitive(institution.name, value)
           } else {
             console.log(`Institutions not found: ${institution.name}`)
+            console.log(institution._id)
+            console.log(Object.keys(institutionsMap))
           }
+          break;
         default:
           console.log(`Unknown criteria key: ${key}`)
       }
