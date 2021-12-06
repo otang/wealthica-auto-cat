@@ -102,8 +102,7 @@
           if (institution) {
             return stringContainsInsensitive(institution.name, value)
           } else {
-            console.log(`Institutions not found: ${institution.name}`)
-            console.log(institution._id)
+            console.log(`Institution not found: ${tx.institution}`)
             console.log(Object.keys(institutionsMap))
           }
           break;
@@ -128,7 +127,7 @@
     async function getInstitutions (date) {
       if (!date) date = dayjs().format('YYYY-MM-DD')
       const institutions = await addon.api.getInstitutions({ date })
-      console.log(`Found ${institutions.length} on ${date}`)
+      console.log(`Found ${institutions.length} institutions`)
       console.log(institutions)
 
       const map = {}
