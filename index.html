@@ -101,6 +101,8 @@
           const institution = institutionsMap[tx.institution]
           if (institution) {
             return stringContainsInsensitive(institution.name, value)
+          } else {
+            console.log(`Institutions not found: ${institution.name}`)
           }
         default:
           console.log(`Unknown criteria key: ${key}`)
