@@ -43,8 +43,8 @@
     //      description:
     //      descriptionContains:
     //      #todo
-    //      accountContains
-    //      institutionContains
+    //      account
+    //      institution
     //    }
     // }
     const rules = [
@@ -52,9 +52,8 @@
         criteria: {
           descriptionContains: 'mr_milenko@hotmail.com',
           amountMax: -1,
-          institutionContains: 'Tangerine'
-          // institutionContains: 'Tangerine',
-          // accountContains: 'CHEQUING - Flex and Expenses',
+          institution: 'Tangerine'
+          // account: 'CHEQUING - Flex and Expenses',
         },
         changes: {
           type: 'withdrawal',
@@ -70,7 +69,7 @@
     }
 
     function stringMatchInsensitive (str, search) {
-      const result = `${str}`.toLowerCase() === `${search}`.toLowerCase()
+      const result = `${str}`.toLowerCase().trim() === `${search}`.toLowerCase().trim()
       if (result) console.log(`stringMatchInsensitive(${str}, ${search}): ${result}`)
       return result
     }
@@ -97,15 +96,14 @@
           return amountIsLte(tx.currency_amount, value)
         case 'amountMin':
           return amountIsGte(tx.currency_amount, value)
-        case 'institutionContains':
+        case 'institution':
           const institution = institutionsMap[tx.institution]
-          if (institution) {
-            return stringContainsInsensitive(institution.name, value)
-          } else {
+          if (!institution) {
             console.log(`Institution not found: ${tx.institution}`)
             console.log(Object.keys(institutionsMap))
+            return
           }
-          break;
+          return stringMatchInsensitive(institution.name, value)
         default:
           console.log(`Unknown criteria key: ${key}`)
       }
