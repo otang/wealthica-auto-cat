@@ -98,6 +98,17 @@
       if (!fake) await addon.api.updateTransaction(id, changes)
     }
 
+    // Compose a query object from the addon options to pass to the API calls.
+    function getQueryFromOptions (options) {
+      return {
+        from: options.dateRangeFilter && options.dateRangeFilter[0],
+        to: options.dateRangeFilter && options.dateRangeFilter[1],
+        groups: options.groupsFilter,
+        institutions: options.institutionsFilter,
+        investments: options.investmentsFilter === 'all' ? null: options.investmentsFilter,
+      }
+    }
+
     $(function () {
       addon = new Addon();
 
@@ -190,16 +201,7 @@
         }
       }
 
-      // Compose a query object from the addon options to pass to the API calls.
-      function getQueryFromOptions (options) {
-        return {
-          from: options.dateRangeFilter && options.dateRangeFilter[0],
-          to: options.dateRangeFilter && options.dateRangeFilter[1],
-          groups: options.groupsFilter,
-          institutions: options.institutionsFilter,
-          investments: options.investmentsFilter === 'all' ? null: options.investmentsFilter,
-        }
-      }
+
     });
   </script>
 
