@@ -65,8 +65,8 @@
       return true // #todo
     }
 
-    async function getTransactions () {
-      return addon.api.getTransactions(getQueryFromOptions(addonOptions))
+    async function getTransactions (options) {
+      return addon.api.getTransactions(options)
     }
 
     async function autoCatOne (tx) {
@@ -117,7 +117,7 @@
       $('#categorizeTransactions').on('click', async function () {
 
         $(this).attr('disabled', 'disabled');
-        const transactions = await getTransactions()
+        const transactions = await getTransactions(getQueryFromOptions(addonOptions))
         await autoCatAll(transactions)
         console.log({ result })
         $('#categorizeTransactions').removeAttr('disabled');
@@ -142,7 +142,7 @@
       $('#getTransactions').on('click', function () {
         $(this).attr('disabled', 'disabled');
 
-        addon.api.getTransactions(getQueryFromOptions(addonOptions)).then(function (response) {
+        getTransactions(getQueryFromOptions(addonOptions)).then(function (response) {
           $('#result').html('List Transactions Result:<br><code>' + JSON.stringify(response) + '</code>');
         }).catch(function (err) {
           $('#result').html('Error:<br><code>' + err + '</code>');
