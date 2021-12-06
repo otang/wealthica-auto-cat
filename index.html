@@ -28,7 +28,7 @@
 
   <script type="text/javascript">
     const txId = '61abe41bf76175a7eaf61d8e';
-    var addon, addonOptions, institutions;
+    var addon, addonOptions, institutionsMap;
 
     // set: type, category, amount, description
     // example rule:
@@ -51,11 +51,12 @@
       {
         criteria: {
           descriptionContains: 'mr_milenko@hotmail.com',
-          amountMax: -1
-        },
-        changes: {
+          amountMax: -1,
+          institutionContains: 'Tangerine'
           // institutionContains: 'Tangerine',
           // accountContains: 'CHEQUING - Flex and Expenses',
+        },
+        changes: {
           type: 'withdrawal',
           category: 'Expenses - Variable'
         }
@@ -96,6 +97,11 @@
           return amountIsLte(tx.currency_amount, value)
         case 'amountMin':
           return amountIsGte(tx.currency_amount, value)
+        case 'institutionContains':
+          const institution = institutionsMap[tx.institution]
+          if (institution) {
+            return stringContainsInsensitive(institution.name, value)
+          }
         default:
           console.log(`Unknown criteria key: ${key}`)
       }
@@ -176,7 +182,7 @@
         $('button').removeAttr('disabled');
         showAddonData(addonOptions.data, true);
 
-        institutions = await getInstitutions()
+        institutionsMap = await getInstitutions()
       }).on('update', function (options) {
         // Filters have been updated and Dashboard is passing in updated options
         addonOptions = _.extend(addonOptions, options);
