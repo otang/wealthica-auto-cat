@@ -19,7 +19,7 @@
     <button type="button" disabled="disabled" id="getPositions">List Positions</button>
     <button type="button" disabled="disabled" id="addTransaction">Add Transaction</button>
     <button type="button" disabled="disabled" id="saveData">Save Data</button>
-    <button type="button" disabled="disabled" id="categorizeTx">Categorize Transaction + change type</button>
+    <button type="button" disabled="disabled" id="categorizeTransactions">Categorize Transactions</button>
   </p>
   <textarea id="data" rows="8" cols="100"></textarea>
   <div id="result"></div>
@@ -28,10 +28,74 @@
     const txId = '61abe41bf76175a7eaf61d8e';
     var addon, addonOptions;
 
-    async function updateTx (id, changes) {
-      console.log(`Updating TX ${id}...`, changes)
-      const result = await addon.api.updateTransaction(id, changes)
-      return result
+    // set: type, category, amount, description
+    // example rule:
+    // {
+    //    set: {
+    //      type: x,
+    //      category: y
+    //    }
+    //    criteria: {
+    //      amountMin:
+    //      amountMax:
+    //      description:
+    //      descriptionContains:
+    //      #todo
+    //      accountContains
+    //      institutionContains
+    //    }
+    // }
+    const rules = [
+      {
+        criteria: {
+          descriptionContains: 'mr_milenko@hotmail.com',
+          amountMin: -1
+        },
+        changes: {
+          // institutionContains: 'Tangerine',
+          // accountContains: 'CHEQUING - Flex and Expenses',
+          type: 'withdrawal',
+          category: 'Expenses - Variable'
+        }
+      }
+
+    ]
+
+    function allCriteriaPasses (tx, criteria) {
+      return true // #todo
+    }
+
+    async function getTransactions () {
+      return addon.api.getTransactions(getQueryFromOptions(addonOptions)
+    }
+
+    async function autoCatOne (tx) {
+      console.log(`AutoCating ${tx.id}`)
+
+      for (const rule of rules) {
+        const { criteria, changes } = rule
+        if (allCriteriaPasses(tx, criteria)) {
+          await updateTx(tx.id, changes, { fake: true })
+        }
+      }
+
+    }
+
+    async function autoCatAll (transactions) {
+      console.log(`AutoCating ${transactions.length} transactions`)
+      for (const tx of transactions) {
+        await autoCatOne(tx)
+      }
+    }
+
+
+    async function updateTx (id, changes, { fake = false } = {}) {
+      console.log(`Updating TX ${id}`)
+      const { type, category } = changes
+      if (type) console.log(`\ttype: ${type}`)
+      if (category) console.log(`\tcategory: ${category}`)
+
+      if (!fake) await addon.api.updateTransaction(id, changes)
     }
 
     $(function () {
@@ -50,21 +114,14 @@
         showAddonData(addonOptions.data);
       });
 
-      $('#categorizeTx').on('click', async function () {
-        alert('categorizing transaction...')
+      $('#categorizeTransactions').on('click', async function () {
 
         $(this).attr('disabled', 'disabled');
-
-        const newCategory = `Category #${Math.floor(Math.random() * 10000)}`
-
-        const result = await updateTx(txId, {
-          category: newCategory,
-          type: 'income'
-        })
+        const transactions = await getTransactions()
+        await autoCatAll(transactions)
         console.log({ result })
-        $('#categorizeTx').removeAttr('disabled');
+        $('#categorizeTransactions').removeAttr('disabled');
       });
-
 
 
 
