@@ -68,6 +68,8 @@
       switch (key) {
         case 'descriptionContains':
           return stringContainsInsensitive(tx.description, value)
+        case 'amountMin':
+          return tx.amount >= value
         default:
           console.log(`Unknown criteria key: ${key}`)
       }
