@@ -87,8 +87,6 @@
     }
 
     async function autoCatOne (tx) {
-      console.log(`AutoCating ${tx.id}`)
-
       for (const rule of rules) {
         const { criteria, changes } = rule
         if (allCriteriaPasses(tx, criteria)) {
