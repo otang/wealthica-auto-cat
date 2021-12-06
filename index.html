@@ -9,7 +9,7 @@
   </style>
   <script type="text/javascript" src="https://wealthica.github.io/wealthica.js/dist/addon.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 </head>
 <body>
   <h3>This is the Wealthica Example Add-on.</h3>
@@ -58,11 +58,28 @@
           category: 'Expenses - Variable'
         }
       }
-
     ]
 
-    function allCriteriaPasses (tx, criteria) {
-      return true // #todo
+    function stringContainsInsensitive (str, search) {
+      return `${str}`.toLowerCase().includes(`${search}`.toLowerCase())
+    }
+
+    function criteriaPass (tx, key, value) {
+      switch (key) {
+        case 'descriptionContains':
+          return stringContainsInsensitive(tx.description, value)
+        default:
+          console.log(`Unknown criteria key: ${key}`)
+      }
+      return false
+    }
+
+    function allCriteriaPasses (tx, criterias) {
+      for (const [key, val] of Object.entries(criterias)) {
+        const pass = criteriaPass(tx, key, val)
+        if (!pass) return false
+      }
+      return true
     }
 
     async function getTransactions (options) {
