@@ -68,6 +68,8 @@
       switch (key) {
         case 'descriptionContains':
           return stringContainsInsensitive(tx.description, value)
+        case 'amountMax':
+          return tx.amount <= value
         case 'amountMin':
           return tx.amount >= value
         default:
@@ -147,7 +149,6 @@
         $(this).attr('disabled', 'disabled');
         const transactions = await getTransactions(getQueryFromOptions(addonOptions))
         await autoCatAll(transactions)
-        console.log({ result })
         $('#categorizeTransactions').removeAttr('disabled');
       });
 
