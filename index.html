@@ -116,10 +116,15 @@
 
     async function getInstitutions (date) {
       if (!date) date = dayjs().format('YYYY-MM-DD')
-      const result = await addon.api.getInstitutions({ date })
-      console.log(`Found ${result.length} on ${date}`)
-      console.log(result)
-      return result
+      const institutions = await addon.api.getInstitutions({ date })
+      console.log(`Found ${institutions.length} on ${date}`)
+      console.log(institutions)
+
+      const map = {}
+      for (const i in institutions) {
+        map[i._id] = i
+      }
+      return map
     }
 
     async function autoCatOne (tx) {
