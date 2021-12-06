@@ -62,19 +62,19 @@
 
     function stringContainsInsensitive (str, search) {
       const result = `${str}`.toLowerCase().includes(`${search}`.toLowerCase())
-      // console.log(`stringContainsInsensitive(${str}, ${search}): ${result}`)
+      if (result) console.log(`stringContainsInsensitive(${str}, ${search}): ${result}`)
       return result
     }
 
     function amountIsLte (amount, target) {
       const result = amount <= target
-      console.log(`amountIsLte(${amount}, ${target}): ${result}`)
+      if (result) console.log(`amountIsLte(${amount}, ${target}): ${result}`)
       return result
     }
 
     function amountIsGte (amount, target) {
       const result = amount >= target
-      console.log(`amountIsGte(${amount}, ${target}): ${result}`)
+      if (result) console.log(`amountIsGte(${amount}, ${target}): ${result}`)
       return result
     }
 
