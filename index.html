@@ -61,7 +61,21 @@
     ]
 
     function stringContainsInsensitive (str, search) {
-      return `${str}`.toLowerCase().includes(`${search}`.toLowerCase())
+      const result = `${str}`.toLowerCase().includes(`${search}`.toLowerCase())
+      console.log(`stringContainsInsensitive(${str}, ${search}): ${result}`)
+      return result
+    }
+
+    function amountIsLte (amount, target) {
+      const result = amount <= target
+      console.log(`amountIsLte(${amount}, ${target}): ${result}`)
+      return result
+    }
+
+    function amountIsLte (amount, target) {
+      const result = amount >= target
+      console.log(`amountIsGte(${amount}, ${target}): ${result}`)
+      return result
     }
 
     function criteriaPass (tx, key, value) {
@@ -69,9 +83,9 @@
         case 'descriptionContains':
           return stringContainsInsensitive(tx.description, value)
         case 'amountMax':
-          return tx.amount <= value
+          return amountIsLte(tx.amount, value)
         case 'amountMin':
-          return tx.amount >= value
+          return amountIsGte(tx.amount, value)
         default:
           console.log(`Unknown criteria key: ${key}`)
       }
