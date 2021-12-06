@@ -131,7 +131,7 @@
       console.log(institutions)
 
       const map = {}
-      for (const i in institutions) {
+      for (const i of institutions) {
         map[i._id] = i
       }
       return map
@@ -153,7 +153,6 @@
         await autoCatOne(tx)
       }
     }
-
 
     async function updateTx (id, changes, { fake = false } = {}) {
       console.log(`Updating TX ${id}`)
