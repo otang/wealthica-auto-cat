@@ -66,6 +66,12 @@
       return result
     }
 
+    function stringMatchInsensitive (str, search) {
+      const result = `${str}`.toLowerCase() === `${search}`.toLowerCase()
+      if (result) console.log(`stringMatchInsensitive(${str}, ${search}): ${result}`)
+      return result
+    }
+
     function amountIsLte (amount, target) {
       const result = amount <= target
       if (result) console.log(`amountIsLte(${amount}, ${target}): ${result}`)
@@ -82,6 +88,8 @@
       switch (key) {
         case 'descriptionContains':
           return stringContainsInsensitive(tx.description, value)
+        case 'description':
+          return stringMatchInsensitive(tx.description, value)
         case 'amountMax':
           return amountIsLte(tx.currency_amount, value)
         case 'amountMin':
